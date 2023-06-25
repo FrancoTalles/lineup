@@ -20,7 +20,7 @@ export default function SignUpForm() {
 
   return (
     <>
-      <div className="flex flex-col items-center px-5 py-12 h-fit rounded bg-MainRed">
+      <div className="flex flex-col items-center px-5 py-12 h-fit rounded bg-MainRed w-96">
         <h1 className="font-ubun mb-10 text-5xl text-MainWhite">Cadastro</h1>
         <form>
           <div>
