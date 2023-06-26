@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import authApi from "../../services/authApi";
 
 export default function SignUpForm() {
   const [form, setForm] = useState({
@@ -8,8 +9,9 @@ export default function SignUpForm() {
     profileImg: "",
     password: "",
   });
-
   const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
 
   function handleForm(e) {
     setForm({
@@ -18,11 +20,23 @@ export default function SignUpForm() {
     });
   }
 
+  async function submit(event) {
+    event.preventDefault();
+
+    try {
+      const userData = await authApi.signUp(form);
+      navigate("/");
+    } catch (error) {
+      setErrorMessage("Não foi possível fazer cadastro!");
+      console.log(error)
+    }
+  }
+
   return (
     <>
       <div className="flex flex-col items-center px-5 py-12 h-fit rounded bg-MainRed w-96">
         <h1 className="font-ubun mb-10 text-5xl text-MainWhite">Cadastro</h1>
-        <form>
+        <form onSubmit={submit}>
           <div>
             <h2 className="font-ubun mb-3 text-MainWhite">Nome</h2>
             <input
@@ -72,10 +86,13 @@ export default function SignUpForm() {
             />
           </div>
           {errorMessage && (
-            <p className="text-red-500 text-center mb-3">{errorMessage}</p>
+            <p className="text-MainWhite text-center mb-3">{errorMessage}</p>
           )}
-          <button className="w-full h-10 flex items-center justify-center border-none rounded cursor-pointer bg-MainBlue text-white mt-8">
-            Fazer Login
+          <button
+            type="submit"
+            className="w-full h-10 flex items-center justify-center border-none rounded cursor-pointer bg-MainBlue text-white mt-8"
+          >
+            Fazer Cadastro
           </button>
         </form>
         <Link to="/" className="mt-9 text-MainWhite">
